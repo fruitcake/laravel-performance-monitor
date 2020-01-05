@@ -8,7 +8,18 @@
 
 ## About
 
-The `laravel-performance-monitor` package allows you to monitor all your requests.
+The `laravel-performance-monitor` package allows you to monitor all your requests. 
+It's slightly similar to Laravel Telescope, but only stores minimal information for ALL your requests.
+
+## Features
+
+ - Log request paths, duration, response code
+ - Count queries
+ - Prune command
+ 
+## Todo
+ - Dashboard / charts?
+ - Aggregates?
 
 ## License
 

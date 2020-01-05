@@ -15,13 +15,16 @@ class RequestLoggerTest extends TestCase
 
         $this->assertEquals(1, IncomingRequest::count());
 
+        /** @var IncomingRequest $incomingRequest */
         $incomingRequest = IncomingRequest::latest()->first();
 
+        $this->assertEquals('GET', $incomingRequest->request_method);
         $this->assertEquals('http://localhost/web/ping?q=1', $incomingRequest->request_url);
         $this->assertEquals('web/ping', $incomingRequest->request_path);
-        $this->assertEquals(200, $incomingRequest->response_code);
+        $this->assertEquals(200, $incomingRequest->response_status);
+        $this->assertEquals('Closure', $incomingRequest->controller_action);
         $this->assertNotEquals(0, $incomingRequest->duration);
-
+        $this->assertNotEquals(0, $incomingRequest->memory);
     }
 
     public function testLogsNotFoundRequest()
@@ -32,11 +35,12 @@ class RequestLoggerTest extends TestCase
 
         $this->assertEquals(1, IncomingRequest::count());
 
+        /** @var IncomingRequest $incomingRequest */
         $incomingRequest = IncomingRequest::latest()->first();
 
         $this->assertEquals('http://localhost/web/404', $incomingRequest->request_url);
         $this->assertEquals('web/404', $incomingRequest->request_path);
-        $this->assertEquals(404, $incomingRequest->response_code);
+        $this->assertEquals(404, $incomingRequest->response_status);
         $this->assertNotEquals(0, $incomingRequest->duration);
     }
 
@@ -48,11 +52,12 @@ class RequestLoggerTest extends TestCase
 
         $this->assertEquals(1, IncomingRequest::count());
 
+        /** @var IncomingRequest $incomingRequest */
         $incomingRequest = IncomingRequest::latest()->first();
 
         $this->assertEquals('http://localhost/web/error', $incomingRequest->request_url);
         $this->assertEquals('web/error', $incomingRequest->request_path);
-        $this->assertEquals(500, $incomingRequest->response_code);
+        $this->assertEquals(500, $incomingRequest->response_status);
         $this->assertNotEquals(0, $incomingRequest->duration);
     }
 
@@ -67,8 +72,9 @@ class RequestLoggerTest extends TestCase
 
         $this->assertEquals(1, IncomingRequest::count());
 
+        /** @var IncomingRequest $incomingRequest */
         $incomingRequest = IncomingRequest::latest()->first();
-        $this->assertEquals(200, $incomingRequest->response_code);
+        $this->assertEquals(200, $incomingRequest->response_status);
         $this->assertEquals(2, $incomingRequest->query_count);
 
     }

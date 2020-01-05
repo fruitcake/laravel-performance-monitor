@@ -30,11 +30,14 @@ class RequestLogger
 
         IncomingRequest::forceCreate(
             [
+                'request_method' => $event->request->getMethod(),
                 'request_url' => $event->request->fullUrl(),
                 'request_path' => $event->request->path(),
-                'response_code' => $event->response->getStatusCode(),
+                'controller_action' =>  optional($event->request->route())->getActionName(),
+                'response_status' => $event->response->getStatusCode(),
                 'query_count' => static::$queryCount,
                 'duration' => $startTime ? floor((microtime(true) - $startTime) * 1000) : 0,
+                'memory' => round(memory_get_peak_usage(true) / 1024 / 1025, 1),
             ]
         );
 

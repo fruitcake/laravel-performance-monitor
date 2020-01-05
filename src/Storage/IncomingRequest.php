@@ -5,14 +5,16 @@ namespace Fruitcake\PerformanceMonitor\Storage;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class IncomingRequest
  *
  * @property int $id
+ * @property string $request_method
  * @property string $request_url
  * @property string $request_path
- * @property int $response_code
+ * @property string $controller_action
+ * @property int $response_status
  * @property float $duration
  * @property int $query_count
+ * @property int $memory
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  * @package Fruitcake\PerformanceMonitor\Storage

@@ -16,11 +16,14 @@ class CreateMonitorIncomingRequests extends Migration
         Schema::create('monitor_incoming_requests', function (Blueprint $table) {
             $table->bigIncrements('id');
 
+            $table->string('request_method');
             $table->string('request_url');
             $table->string('request_path');
-            $table->unsignedInteger('response_code');
+            $table->string('controller_action')->nullable();
+            $table->unsignedInteger('response_status');
             $table->unsignedInteger('query_count');
             $table->unsignedInteger('duration');
+            $table->unsignedInteger('memory');
             $table->timestamps();
 
             $table->index('request_path');
