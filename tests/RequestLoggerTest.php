@@ -72,4 +72,14 @@ class RequestLoggerTest extends TestCase
         $this->assertEquals(2, $incomingRequest->query_count);
 
     }
+
+    public function testIgnoresPaths()
+    {
+        $crawler = $this->call('GET', 'ignored/ping');
+
+        $this->assertEquals(404, $crawler->getStatusCode());
+
+        $this->assertEquals(0, IncomingRequest::count());
+
+    }
 }

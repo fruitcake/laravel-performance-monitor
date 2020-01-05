@@ -24,6 +24,10 @@ class RequestLogger
     {
         $startTime = defined('LARAVEL_START') ? LARAVEL_START : $event->request->server('REQUEST_TIME_FLOAT');
 
+        if ($event->request->is(config('performance-monitor.ignore_paths', []))) {
+            return;
+        }
+
         IncomingRequest::forceCreate(
             [
                 'request_url' => $event->request->fullUrl(),

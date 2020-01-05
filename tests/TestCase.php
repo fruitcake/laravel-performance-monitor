@@ -36,6 +36,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'database' => ':memory:',
             'prefix' => '',
         ]);
+        $config->set('performance-monitor.ignore_paths', [
+            'ignored/*'
+        ]);
 
         /** @var Router $router */
         $router = $app['router'];

@@ -32,6 +32,7 @@ class PerformanceMonitorServiceProvider extends BaseServiceProvider
     public function boot()
     {
         $this->registerMigrations();
+        $this->registerPublishing();
 
         if (! config('performance-monitor.enabled')) {
             return;
@@ -63,6 +64,21 @@ class PerformanceMonitorServiceProvider extends BaseServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+        }
+    }
+
+
+    /**
+     * Register the config
+     *
+     * @return void
+     */
+    private function registerPublishing()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                 __DIR__ . '/../config/performance-monitor.php' => config_path('performance-monitor.php'),
+             ], 'performance-monitor-config');
         }
     }
 }
