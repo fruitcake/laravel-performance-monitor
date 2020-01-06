@@ -26,7 +26,7 @@ class CreateMonitorIncomingRequests extends Migration
             $table->unsignedInteger('memory');
             $table->timestamps();
 
-            $table->index('request_path');
+            $table->index('controller_action');
             $table->index('response_code');
             $table->index('created_at');
         });
