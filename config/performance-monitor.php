@@ -16,4 +16,20 @@ return [
     'ignore_paths' => [
         //
     ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard
+    |--------------------------------------------------------------------------
+    |
+    |
+    |
+    */
+    'path' => 'performance-monitor',
+
+    'middleware' => [
+        'web',
+        \Fruitcake\PerformanceMonitor\Http\Middleware\Authorize::class,
+    ],
 ];

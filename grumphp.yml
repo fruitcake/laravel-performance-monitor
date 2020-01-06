@@ -13,4 +13,5 @@ parameters:
       ignore_patterns:
       - tests/
       - migrations/
+      - resources/
       triggered_by: [php]

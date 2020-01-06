@@ -4,6 +4,7 @@ namespace Fruitcake\PerformanceMonitor;
 
 use Fruitcake\PerformanceMonitor\Console\PruneDatabase;
 use Illuminate\Foundation\Http\Events\RequestHandled;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class PerformanceMonitorServiceProvider extends BaseServiceProvider
@@ -38,21 +39,36 @@ class PerformanceMonitorServiceProvider extends BaseServiceProvider
             return;
         }
 
-        $this->registerQueryCounter();
+        $this->registerRoutes();
+        $this->registerViews();
 
-        $this->registerRequestHandler();
+        PerformanceMonitor::start($this->app);
     }
 
-    private function registerQueryCounter()
+    /**
+     * Register the package routes.
+     *
+     * @return void
+     */
+    private function registerRoutes()
     {
-        RequestLogger::resetQueryCount();
+        Route::middlewareGroup('performance-monitor', config('performance-monitor.middleware', []));
 
-        $this->app['db']->listen(\Closure::fromCallable([RequestLogger::class, 'incrementQueryCount']));
+        Route::group([
+             'namespace' => 'Fruitcake\PerformanceMonitor\Http\Controllers',
+             'prefix' => config('performance-monitor.path'),
+             'middleware' => 'performance-monitor',
+         ], function () {
+            $this->loadRoutesFrom(__DIR__ . '/Http/routes.php');
+         });
     }
 
-    private function registerRequestHandler()
+    private function registerViews()
     {
-        $this->app['events']->listen(RequestHandled::class, [RequestLogger::class, 'storeHandledRequest']);
+        $this->loadViewsFrom(
+            __DIR__ . '/../resources/views',
+            'performance-monitor'
+        );
     }
 
     /**
@@ -66,7 +82,6 @@ class PerformanceMonitorServiceProvider extends BaseServiceProvider
             $this->loadMigrationsFrom(__DIR__ . '/../migrations');
         }
     }
-
 
     /**
      * Register the config

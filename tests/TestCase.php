@@ -31,6 +31,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
         $config = $app->get('config');
         $config->set('database.default', 'testbench');
+//        $config->set('logging.default', 'errorlog');
+
+        $config->set('database.default', 'testbench');
         $config->set('database.connections.testbench', [
             'driver' => 'sqlite',
             'database' => ':memory:',
